@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<title> <!--  --> </title>
+		{% load static %}
+    	<link rel="stylesheet" type="text/css" href="{% static 'login_registration/css/style.css' %}">
+		<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' ></script>
+		<script type="text/javascript">	
+			$(document).ready(function(){
+			});
+		</script>
+	</head>
+	<body>
+		<h1>Login and Registration</h1>
+		<div id="registrationBox">
+			<form action="/register" method="post">
+				{% csrf_token %}
+				<input type="hidden" name = "action" value="register">
+				<h2>Register Here!</h2>
+				<div class="fieldDiv">
+					<h4>First Name:</h4>
+					<input class="textBox" type="text" name="firstName">
+				</div>
+				<div class="fieldDiv">
+					<h4>Last Name:</h4>
+					<input class="textBox" type="text" name="lastName">
+				</div>
+				<div class="fieldDiv">
+					<h4>Email:</h4>
+					<input class="textBox" type="text" name="email">
+				</div>
+				<div class="fieldDiv">
+					<h4>Password:</h4>
+					<input class="textBox" type="password" name="password1">
+				</div>
+				<div class="fieldDiv">
+					<h4>Confirm Password:</h4>
+					<input class="textBox" type="password" name="password2">
+				</div>
+				<input class="submitButton" type="submit" value="Register!">
+			</form>
+		</div>
+		<div id="loginBox">
+			<form action="/login" method="post">
+				{% csrf_token %}
+				<input type="hidden" name = "action" value="login">
+				<h2>Login Here!</h2>
+				<div class="fieldDiv">
+					<h4>Email:</h4>
+					<input class="textBox" type="text" name="email">
+				</div>
+				<div class="fieldDiv">
+					<h4>Password:</h4>
+					<input class="textBox" type="password" name="password">
+				</div>
+				<input class="submitButton" type="submit" value="Login!">
+			</form>
+		</div>
+		<div id="alertMessage">
+			{% if messages %}
+				{% for message in messages %}
+					<p>{{ message }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</body>
+</html>
+
+<!--  -->
+
+
+
+
+

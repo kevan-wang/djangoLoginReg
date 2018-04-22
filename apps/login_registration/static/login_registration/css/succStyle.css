@@ -1,0 +1,13 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+body {
+	padding: 30px;
+}
+
+#logout {
+	padding: 3px 6px;
+	margin-bottom: 20px;
+}
