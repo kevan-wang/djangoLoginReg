@@ -2,8 +2,6 @@ from __future__ import unicode_literals
 from django.db import models
 import re, datetime, bcrypt
 
-EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
-
 #####	DATABASE MODELS
 
 class UserManager(models.Manager):
@@ -14,40 +12,57 @@ class UserManager(models.Manager):
 			if userData[key] == "":
 				errors["emptyField"] = "Error: All forms must be filled out!"
 				break
-		errors.update(validName(userData["firstName"]))	#  Check validity of first name, add all errors found to the errors dictionary.
-		errors.update(validName(userData["lastName"]))		#  Check validity of last name, add all errors found to the errors dictionary.
-		errors.update(validEmail(userData["email"]))		#  Check validity of email, add all errors found to the errors dictionary.
+		errors.update(validName(userData["name"]))	#  Check validity of first name, add all errors found to the errors dictionary.
+		errors.update(validName(userData["userName"]))		#  Check validity of email, add all errors found to the errors dictionary.
 		errors.update(validPassword(userData["password1"]))	#  Check validity of password, add all errors found to the errors dictionary.
 		if userData["password1"] != userData["password2"]:			#  Checks that the passwords match, adds error to the errors dictionary if found..
 			errors["passMatch"] = "Error:  Confirmation password does not match!"
-		if User.objects.filter(email=userData['email']).count() != 0:	#  Checks if the user is already registered.
+		if User.objects.filter(userName=userData['userName']).count() != 0:	#  Checks if the user is already registered.
 			errors["register"] = "User already exists in database!"
 		return errors
 	def validatorLogin(self, postData):
 		errors = {}
-		userEmail = postData["email"]
+		userName = postData["userName"]
 		userPassword = postData["password"]
 		#	Check if the email is found in the database of registered users.
-		if User.objects.filter(email=userEmail).count() == 0:
+		if User.objects.filter(userName=userName).count() == 0:
 			errors["login"] = "Error:  Invalid login info"
 		else:
-			user = User.objects.filter(email=userEmail).first()
+			user = User.objects.filter(userName=userName).first()
 			hashedPW = user.passwordHash
 			#	Check if the password matches the hashed password in the database.
 			if not bcrypt.checkpw(userPassword.encode('utf-8'), hashedPW.encode('utf-8')):
 				errors["login"] = "Error:  Invalid login info"
 		return errors
 
+class ItemManager(models.Manager):
+	def validator(self, name):
+		errors = {}
+		if name == "":
+			errors["emptyField"] = "Error: Item name must be filled out!"
+			return errors
+		if len(name) < 4:
+			errors["nameLen"] = "Error:  Item's name is too short!  Name must be more than 3 characters."
+		#	Checks if the object is already in the database.
+		if Item.objects.filter(name=name).count() != 0:
+			errors["register"] = "Item already exists in database!"
+		return errors
+
 class User(models.Model):
-	first_name = models.CharField(max_length=255)
-	last_name = models.CharField(max_length=255)
-	email = models.CharField(max_length=255)
+	name = models.CharField(max_length=255)
+	userName = models.CharField(max_length=255)
 	passwordHash = models.TextField()
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 	objects = UserManager()
 
-
+class Item(models.Model):
+	name = models.CharField(max_length=255)
+	added_by = models.ForeignKey(User, related_name="added_items")
+	wished_adds = models.ManyToManyField(User, related_name="wished_items")
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+	objects = ItemManager()
 
 #####  HELPER FUNCTIONS
 
@@ -72,19 +87,8 @@ def validName(name):
 	#	Input:  String.  Either first name or last name.
 	#	Output:  Dictionary of error messages.
 	errors = {}
-	if len(name) < 2:
-		errors["nameLen"] = "Error: Name must be 2 or more characters long."
-	if not name.isalpha():
-		errors["nameAlpha"] = "Error: Name must consist of alphabetic characters only."
-	return errors
-
-def validEmail(email):
-	#	Helper function.  Checks if email is valid
-	#	Input:  String.  Email.
-	#	Output:  Dictionary of error messages.
-	errors = {}
-	if not EMAIL_REGEX.match(email):
-		errors["emailValidity"] = "Error: Invalid email address."
+	if len(name) < 3:
+		errors["nameLen"] = "Error: Name must be 3 or more characters long."
 	return errors
 
 def validPassword(password):

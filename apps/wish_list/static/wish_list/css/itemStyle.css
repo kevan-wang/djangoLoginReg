@@ -1,0 +1,42 @@
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+body {
+	padding: 30px;
+	width: 900px;
+}
+
+h1, .topButton, #topButtons {
+	display: inline;
+}
+
+#topButtons {
+	float: right;
+	margin-right: 300px;
+}
+
+h3 {
+	margin-top: 20px;
+}
+
+#users {
+	margin-top: 20px;
+	margin-left: 30px;
+}
+
+#createForm {
+	margin: 20px 20px;
+}
+
+#textBox {
+	padding: 3px;
+}
+
+
+.redButton, .postButton {
+	padding: 3px 6px;
+	margin-bottom: 20px;
+	display: inline;
+}

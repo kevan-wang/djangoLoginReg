@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<title> <!--  --> </title>
+		{% load static %}
+    	<link rel="stylesheet" type="text/css" href="{% static 'wish_list/css/dashStyle.css' %}">
+		<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' ></script>
+		<script type="text/javascript">	
+			$(document).ready(function(){
+			});
+		</script>
+	</head>
+	<body>
+		<div id=topBanner>
+			<h1>Hello, {{ userName }}!</h1>	<!-- fix this -->
+			<form action="/logout" method="post">
+				{% csrf_token %}
+				<input type="submit" class="postButton" name="logout" value="Logout">
+			</form>
+		</div>
+
+		<div id="messages">
+			{% if messages %}
+				{% for message in messages %}
+					<p>{{ message }}</p>
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		<h3>Your Wish List:</h3>
+		<table>
+			<tr>
+				<th>Item</th>
+				<th>Added By</th>
+				<th>Date Added</th>
+				<th>Action</th>
+			</tr>
+			{% for item in myWishList %}
+				<tr>
+					<td>
+						<form action="/wish_items/{{item.id}}">
+							<input type="submit" value={{ item.name }}>
+						</form>
+					</td>
+					<td>{{ item.added_by.name }}</td>
+					<td>{{ item.created_at }}</td>
+					<td>
+						{% if item.added_by.userName == userName %}
+							<form action="/delete" method="post">
+								{% csrf_token %}
+								<input type="hidden" name="itemName" value={{ item.name }}>
+								<input type="submit" name="delete" value="Delete">
+							</form>
+						{% else %}
+							<form action="/remove" method="post">
+								{% csrf_token %}
+								<input type="hidden" name="itemName" value={{ item.name }}>
+								<input type="submit" name="delete" value="Remove From Wish List">
+							</form>						
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+
+		<h3>Other Users' Wish Lists:</h3>
+		<table>
+			<tr>
+				<th>Item</th>
+				<th>Added By</th>
+				<th>Date Added</th>
+				<th>Action</th>
+			</tr>
+			{% for item in items %}
+				<tr>
+					<td>
+						<form action="/wish_items/{{item.id}}">
+							<input type="submit" value={{ item.name }}>
+						</form>					</td>
+					<td>{{ item.added_by.name }}</td>
+					<td>{{ item.created_at }}</td>
+					<td>
+						<form action="/add_wish" method="post">
+							{% csrf_token %}
+							<input type="hidden" name="itemName" value={{ item.name }}>
+							<input type="submit" name="add_wish" value="Add To Wish List">
+						</form>						
+					</td>
+				</tr>
+			{% endfor %}
+
+		</table>
+		<form action="/wish_items/create">
+			<input type="submit" class="postButton" name="create" value="Add Item" method="get">
+		</form>
+
+
+	</body>
+</html>
+
+<!--  -->
+
+
+
+<!-- 		<div id=topBanner>
+			<h1>Hello, STEVE!</h1>
+			<form action="/logout" method="post">
+				{% csrf_token %}
+				<input type="submit" class="postButton" name="logout" value="Logout">
+			</form>
+		</div>
+
+		{% if messages %}
+			{% for message in messages %}
+				<p>{{ message }}</p>
+			{% endfor %}
+		{% endif %}
+
+		<h3>Your Wish List:</h3>
+		<table>
+			<tr>
+				<th>Item</th>
+				<th>Added By</th>
+				<th>Date Added</th>
+				<th>Action</th>
+			</tr>
+			<tr>
+				<td>iPhone 9</td>
+				<td>Mark</td>
+				<td>Jan 10 2015</td>
+				<td>Remove from Wish List</td>				
+			</tr>
+			<tr>
+				<td>iPhone 9</td>
+				<td>Mark</td>
+				<td>Jan 10 2015</td>
+				<td>Remove from Wish List</td>				
+			</tr>
+		</table>
+
+		<h3>Other Users' Wish Lists:</h3>
+		<table>
+			<tr>
+				<th>Item</th>
+				<th>Added By</th>
+				<th>Date Added</th>
+				<th>Action</th>
+			</tr>
+			<tr>
+				<td>iPhone 9</td>
+				<td>Mark</td>
+				<td>Jan 10 2015</td>
+				<td>Remove from Wish List</td>				
+			</tr>
+				<tr>
+				<td>iPhone 9</td>
+				<td>Mark</td>
+				<td>Jan 10 2015</td>
+				<td>Remove from Wish List</td>				
+			</tr>
+		</table>
+		<form action="/wish_items/create">
+			{% csrf_token %}
+			<input type="submit" class="postButton" name="create" value="Add Item" method="get">
+		</form>
+
+ -->

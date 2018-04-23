@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<title> <!--  --> </title>
+		{% load static %}
+    	<link rel="stylesheet" type="text/css" href="{% static 'wish_list/css/itemStyle.css' %}">
+		<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' ></script>
+		<script type="text/javascript">	
+			$(document).ready(function(){
+			});
+		</script>
+	</head>
+	<body>
+		<div id="topBanner">
+			<h1>Create a New Item:</h1>	<!-- fix this -->
+			<div id="topButtons">
+				<form action="/dashboard" class="topButton">
+					<input type="submit" class="redButton" name="home" value="Home">
+				</form>
+				<form action="/logout" class="topButton" method="post">
+					{% csrf_token %}
+					<input type="submit" class="postButton" name="logout" value="Logout">
+				</form>
+			</div>
+		</div>
+
+		<div id="input">
+			<h3>Item/Product:</h3>
+			<form action="/create_item" id="createForm" method="post">
+				{% csrf_token %}
+				<input type="text" id="textBox" name="itemName">
+				<input type="submit" class="redButton" name="add" value="Add">
+			</form>
+		</div>
+
+		{% if messages %}
+			{% for message in messages %}
+				<p>{{ message }}</p>
+			{% endfor %}
+		{% endif %}
+	</body>
+</html>
+
+<!--  -->
+
+
+
+
+

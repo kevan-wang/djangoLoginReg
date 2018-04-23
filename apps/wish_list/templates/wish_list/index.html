@@ -5,7 +5,7 @@
 		<meta name="description" content="">
 		<title> <!--  --> </title>
 		{% load static %}
-    	<link rel="stylesheet" type="text/css" href="{% static 'login_registration/css/style.css' %}">
+    	<link rel="stylesheet" type="text/css" href="{% static 'wish_list/css/style.css' %}">
 		<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' ></script>
 		<script type="text/javascript">	
 			$(document).ready(function(){
@@ -20,16 +20,12 @@
 				<input type="hidden" name = "action" value="register">
 				<h2>Register Here!</h2>
 				<div class="fieldDiv">
-					<h4>First Name:</h4>
-					<input class="textBox" type="text" name="firstName">
+					<h4>Name:</h4>
+					<input class="textBox" type="text" name="name">
 				</div>
 				<div class="fieldDiv">
-					<h4>Last Name:</h4>
-					<input class="textBox" type="text" name="lastName">
-				</div>
-				<div class="fieldDiv">
-					<h4>Email:</h4>
-					<input class="textBox" type="text" name="email">
+					<h4>User Name:</h4>
+					<input class="textBox" type="text" name="userName">
 				</div>
 				<div class="fieldDiv">
 					<h4>Password:</h4>
@@ -48,8 +44,8 @@
 				<input type="hidden" name = "action" value="login">
 				<h2>Login Here!</h2>
 				<div class="fieldDiv">
-					<h4>Email:</h4>
-					<input class="textBox" type="text" name="email">
+					<h4>User Name:</h4>
+					<input class="textBox" type="text" name="userName">
 				</div>
 				<div class="fieldDiv">
 					<h4>Password:</h4>
